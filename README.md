@@ -44,7 +44,7 @@ npx playwright test
 | Location | Responsibility |
 |---|---|
 | `pages/` | Page locators and reusable UI interactions |
-| `fixtures/test.ts` | A test-scoped `ProductListingPage` and API-selected available product |
+| `fixtures/test.ts` | Test-scoped `ProductListingPage` and `CartPage` objects, plus an API-selected available product |
 | `tests/search.spec.ts` | Matching and empty UI search results |
 | `tests/product-search.api.spec.ts` | Matching and empty API search responses |
 | `tests/cart.spec.ts` | Cart contents, price consistency, and quantity recalculation |

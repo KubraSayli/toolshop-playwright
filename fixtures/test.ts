@@ -1,5 +1,6 @@
 import { test as base, expect } from '@playwright/test';
 import { ProductListingPage } from '../pages/ProductListingPage';
+import { CartPage } from '../pages/CartPage';
 
 type Product = {
   id: string;
@@ -10,10 +11,14 @@ type Product = {
 
 type Fixtures = {
   productListingPage: ProductListingPage;
+  cartPage: CartPage;
   availableProduct: Product;
 };
 
 export const test = base.extend<Fixtures>({
+  cartPage: async ({ page }, use) => {
+    await use(new CartPage(page));
+  },
   availableProduct: async ({ request }, use) => {
     const response = await request.get('https://api.practicesoftwaretesting.com/products/search', {
       params: { q: 'pliers' },

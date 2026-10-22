@@ -1,7 +1,6 @@
 import { test, expect } from '../fixtures/test';
-import { CartPage } from '../pages/CartPage';
 
-test('checkout displays a cart prepared through the API', async ({ request, page, availableProduct }) => {
+test('checkout displays a cart prepared through the API', async ({ request, page, availableProduct, cartPage }) => {
   const apiUrl = 'https://api.practicesoftwaretesting.com';
 
   const createResponse = await request.post(`${apiUrl}/carts`);
@@ -22,7 +21,6 @@ test('checkout displays a cart prepared through the API', async ({ request, page
     }, cartId);
     await page.goto('https://practicesoftwaretesting.com/checkout');
 
-    const cartPage = new CartPage(page);
     await expect(cartPage.productTitle).toHaveText(availableProduct.name);
     await expect(cartPage.quantity).toHaveValue('2');
   } finally {

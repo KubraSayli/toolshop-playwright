@@ -1,11 +1,10 @@
 import { test, expect } from '../fixtures/test';
-import { CartPage } from '../pages/CartPage';
 import { ProductDetailsPage } from '../pages/ProductDetailsPage';
 
 let expectedPrice: string;
 let expectedName: string;
 
-test.beforeEach(async ({ page, productListingPage, availableProduct }) => {
+test.beforeEach(async ({ page, productListingPage, availableProduct, cartPage }) => {
   expectedName = availableProduct.name;
   await productListingPage.goto();
   await productListingPage.search(expectedName);
@@ -19,23 +18,20 @@ test.beforeEach(async ({ page, productListingPage, availableProduct }) => {
   await productDetailsPage.addToCart();
   await expect(productDetailsPage.addedToCartAlert).toBeVisible();
 
-  const cartPage = new CartPage(page);
   await cartPage.open();
 });
 
-test('cart displays the added product and its unit price', async ({ page }) => {
-  const cartPage = new CartPage(page);
+test('cart displays the added product and its unit price', async ({ page, cartPage }) => {
   await expect(page).toHaveURL('https://practicesoftwaretesting.com/checkout');
   await expect(cartPage.productTitle).toHaveText(expectedName);
   await expect(cartPage.quantity).toHaveValue('1');
   await expect(cartPage.productPrice).toHaveText(`$${expectedPrice}`);
 });
 
-test('updating cart quantity recalculates the total', async ({ page }) => {
+test('updating cart quantity recalculates the total', async ({ cartPage }) => {
   const priceInCents = Math.round(Number(expectedPrice) * 100);
   const expectedTotal = ((priceInCents * 2) / 100).toFixed(2);
 
-  const cartPage = new CartPage(page);
   await expect(cartPage.quantity).toHaveValue('1');
   await cartPage.updateQuantity(2);
 
